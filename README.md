@@ -32,7 +32,9 @@ Profile, optimize, measure... and then lather, rinse, and repeat. Good luck!
 
 #### Part 2: Optimize Frames per Second in pizza.html
 
-To optimize views/pizza.html, you will need to modify views/js/main.js until your frames per second rate is 60 fps or higher. You will find instructive comments in main.js. 
+To optimize views/pizza.html, you will need to modify views/js/main.js until your frames per second rate is 60 fps or higher. You will find instructive comments in main.js.
+
+
 
 You might find the FPS Counter/HUD Display useful in Chrome developer tools described here: [Chrome Dev Tools tips-and-tricks](https://developer.chrome.com/devtools/docs/tips-and-tricks).
 
@@ -53,3 +55,19 @@ The portfolio was built on Twitter's <a href="http://getbootstrap.com/">Bootstra
 
 * <a href="http://getbootstrap.com/css/">Bootstrap's CSS Classes</a>
 * <a href="http://getbootstrap.com/components/">Bootstrap's Components</a>
+
+
+### Actions taken for Optimizing the Website
+
+1. Html
+   * The open sans google fonts where not used in any part of project. So the code was commented out. 
+   * The css styles in index.html were inlined in code.
+   * Used async on analytic codes.
+   * The script tags were moved to the bottom part of body tag to avoid blocking of dom construction.
+   * The stylesheet for printing was added with media attribute of print. 
+   * The image size was reduced using image compression online softwares. 
+ 2. Java Script
+    * document.getElementById("pizzaSize") Web API call is faster than document.querySelector("#pizzaSize"). So used the former.
+    * It is better to save the array length, which is part of the condition statement, in a local variable, so the array's length property is not accessed to check its value at each iteration. (i.e. more efficiency)
+    * Creating a local variable to save (document.body.scrollTop / 1250); outside any loop  will prevent the DOM being explicitly touched in every iteration.
+    * Declaring the elem variable (var elem;) in the initialisation of the for-loop will prevent it from being created every time the loop is executed.

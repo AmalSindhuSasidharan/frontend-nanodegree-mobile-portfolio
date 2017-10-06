@@ -403,16 +403,20 @@ var resizePizzas = function(size) {
   window.performance.mark("mark_start_resize");   // User Timing API function
 
   // Changes the value for the size of the pizza above the slider
+
+  // The document.getElementById("pizzaSize") Web API call is faster than document.querySelector("#pizzaSize")
+  // for the former type we are specifically asking to select the id but in
+  // the second option we are asking to find all kind os selectors and then skimmimg down to id
   function changeSliderLabel(size) {
     switch(size) {
       case "1":
-        document.querySelector("#pizzaSize").innerHTML = "Small";
+        document.getElementById("pizzaSize").innerHTML = "Small";
         return;
       case "2":
-        document.querySelector("#pizzaSize").innerHTML = "Medium";
+        document.getElementById("pizzaSize").innerHTML = "Medium";
         return;
       case "3":
-        document.querySelector("#pizzaSize").innerHTML = "Large";
+        document.getElementById("pizzaSize").innerHTML = "Large";
         return;
       default:
         console.log("bug in changeSliderLabel");
@@ -449,8 +453,13 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    var randomPizzas=document.querySelectorAll(".randomPizzaContainer");
-    for (var i = 0; i < randomPizzas.length; i++) {
+    var randomPizzas=document.getElementsByClassName("randomPizzaContainer");
+    randomPizzaslength=randomPizzas.length;
+    for (var i = 0; i < randomPizzaslength; i++) {
+      // It is better to save the array length, which is part of the condition statement,
+       // in a local variable, so the array's length property is not accessed to check its
+        // value at each iteration. (i.e. more efficiency)
+      // for (var i = 0; i <randomPizzas.length; i++) {
       var dx = determineDx(randomPizzas[i], size);
       var newwidth= (randomPizzas[i].offsetWidth + dx) + 'px';
       randomPizzas[i].style.width = newwidth;
@@ -489,8 +498,10 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+// declaring the pizzasDiv variable outside the loop, so only DOM call is made once.
+var pizzasDiv = document.getElementById("randomPizzas");
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
+
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -523,8 +534,11 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
 
   var items = document.querySelectorAll('.mover');
+  // Creating a local variable to save document.body.scrollTop / 1250;
+   // outside any loop  will prevent the DOM being explicitly touched in every iteration.
+  var top = document.body.scrollTop / 1250;
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    var phase = Math.sin((top) + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -545,15 +559,22 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
-    var elem = document.createElement('img');
+  var windowHeight = window.screen.height;
+  var backgroundPizzas =(windowHeight / s) * cols ;
+
+  // Declaring the elem variable (var elem;) in the initialisation of the
+  // for-loop will prevent it from being created every time the loop is executed.
+
+  var movingPizzas = document.getElementById('movingPizzas1');
+  for (var i = 0,elem; i < backgroundPizzas; i++) {
+    elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    movingPizzas.appendChild(elem);
   }
   updatePositions();
 });
