@@ -451,20 +451,47 @@ var resizePizzas = function(size) {
     return dx;
   }
 
-  // Iterates through pizza elements on the page and changes their widths
-  function changePizzaSizes(size) {
+  // // Iterates through pizza elements on the page and changes their widths
+  // function changePizzaSizes(size) {
+  //   var randomPizzas=document.getElementsByClassName("randomPizzaContainer");
+  //   randomPizzaslength=randomPizzas.length;
+  //   // for (var i = 0; i < randomPizzaslength; i++) {
+  //     // It is better to save the array length, which is part of the condition statement,
+  //      // in a local variable, so the array's length property is not accessed to check its
+  //       // value at each iteration. (i.e. more efficiency)
+  //     for (var i = 0; i <randomPizzas.length; i++) {
+  //     var dx = determineDx(randomPizzas[i], size);
+  //     var newwidth= (randomPizzas[i].offsetWidth + dx) + 'px';
+  //     randomPizzas[i].style.width = newwidth;
+  //   }
+  // }
+
+
+function changePizzaSizes(size) {
     var randomPizzas=document.getElementsByClassName("randomPizzaContainer");
     randomPizzaslength=randomPizzas.length;
+
+
+     var dx = determineDx(randomPizzas, size);
+      var newwidth= (randomPizzas.offsetWidth + dx) + 'px';
+
+
+      var dx = determineDx(randomPizzas[1], size);
+      var newwidth= (randomPizzas[1].offsetWidth + dx) + 'px';
+      // removed from loop to avoid unnecessary iteration, since the value of dx and newwidth are same throughout....
     for (var i = 0; i < randomPizzaslength; i++) {
       // It is better to save the array length, which is part of the condition statement,
        // in a local variable, so the array's length property is not accessed to check its
         // value at each iteration. (i.e. more efficiency)
-      // for (var i = 0; i <randomPizzas.length; i++) {
-      var dx = determineDx(randomPizzas[i], size);
-      var newwidth= (randomPizzas[i].offsetWidth + dx) + 'px';
+        // for (var i = 0; i <randomPizzas.length; i++) {
+
       randomPizzas[i].style.width = newwidth;
     }
   }
+
+
+
+
 
 
 
@@ -536,7 +563,7 @@ function updatePositions() {
   var items = document.querySelectorAll('.mover');
   // Creating a local variable to save document.body.scrollTop / 1250;
    // outside any loop  will prevent the DOM being explicitly touched in every iteration.
-  var top = document.body.scrollTop / 1250;
+  var top = document.scrollingElement.scrollTop / 1250;
   for (var i = 0; i < items.length; i++) {
     var phase = Math.sin((top) + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
