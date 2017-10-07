@@ -472,8 +472,8 @@ function changePizzaSizes(size) {
     randomPizzaslength=randomPizzas.length;
 
 
-     var dx = determineDx(randomPizzas, size);
-      var newwidth= (randomPizzas.offsetWidth + dx) + 'px';
+     // var dx = determineDx(randomPizzas, size);
+     //  var newwidth= (randomPizzas.offsetWidth + dx) + 'px';
 
 
       var dx = determineDx(randomPizzas[1], size);
